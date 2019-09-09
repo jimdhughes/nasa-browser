@@ -13,7 +13,7 @@
           <template v-slot:activator="{ on }">
             <v-text-field
               v-model="date"
-              label="Picker without buttons"
+              label="Pick a date"
               prepend-icon="mdi-calendar"
               readonly
               v-on="on"
