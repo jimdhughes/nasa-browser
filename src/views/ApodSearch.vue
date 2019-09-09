@@ -63,6 +63,7 @@ export default {
   watch: {
     date: {
       handler(date) {
+        this.apod = null
         getApod(date).then(res => {
           this.apod = res.data
         })
