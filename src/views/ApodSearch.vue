@@ -22,6 +22,10 @@
           <v-date-picker v-model="date" @input="menu = false"></v-date-picker>
         </v-menu>
       </v-flex>
+      <v-row v-if="loading" justify="center">
+        <v-progress-circular size="32" width="4" :indeterminate="true" color="light-blue"></v-progress-circular>
+      </v-row>
+      <v-row v-if="error" justify="center">Error Getting APOD</v-row>
       <v-col cols="12" justify="center" v-if="apod">
         <v-row v-if="apod.media_type=='image'" align="center" justify="center">
           <v-img
@@ -36,7 +40,7 @@
         <v-row align="center" justify="center">
           <p>{{apod.title}}</p>
         </v-row>
-        <v-row align="center" justify="center">&copy; {{apod.copyright}}</v-row>
+        <v-row align="center" justify="center" v-if="apod.copyright">&copy; {{apod.copyright}}</v-row>
         <v-row v-if="apod" align="center" justify="center">
           <a v-bind:href="apod.url" target="_blank">
             <span v-if="apod.media_type=='image'">SD</span>
@@ -59,14 +63,32 @@ export default {
     menu: false,
     date: new Date().toISOString().substr(0, 10),
     apod: null,
+    loading: false,
+    error: false,
   }),
+  created() {
+    this.requestApod()
+  },
+  methods: {
+    requestApod() {
+      this.apod = null
+      this.loading = true
+      this.error = false
+      getApod(this.date)
+        .then(res => {
+          this.apod = res.data
+          this.loading = false
+        })
+        .catch(err => {
+          this.loading = false
+          this.error = true
+        })
+    },
+  },
   watch: {
     date: {
       handler(date) {
-        this.apod = null
-        getApod(date).then(res => {
-          this.apod = res.data
-        })
+        this.requestApod()
       },
     },
   },
