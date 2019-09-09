@@ -5,7 +5,7 @@ function getNeos(date) {
 }
 
 function getApod(date) {
-  return axios.get(`http://localhost:8080/api/v1/apod/${date}`).then(res => res)
+  return axios.get(`http://localhost:8000/api/v1/apod/${date}`).then(res => res)
 }
 
 module.exports = {
