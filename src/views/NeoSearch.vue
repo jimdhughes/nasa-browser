@@ -47,14 +47,13 @@ export default {
       this.neos = res.data
     })
   },
-  methods: {
-    onDateSelect() {},
-  },
   watch: {
     date: {
       handler(date) {
         getNeos(date).then(res => {
-          this.neos = res.data
+          this.neos = res.data.sort(x =>
+            x.is_potentially_hazardous_asteroid ? -1 : 1
+          )
         })
       },
     },

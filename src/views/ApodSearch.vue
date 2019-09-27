@@ -1,7 +1,10 @@
 <template>
   <v-container>
     <v-layout column>
-      <v-flex xs12 mb-5>
+      <v-row justify="center" xs12 mb-5>
+        <v-btn icon v-on:click="decrementDate">
+          <v-icon>mdi-chevron-left</v-icon>
+        </v-btn>
         <v-menu
           v-model="menu"
           :close-on-content-click="false"
@@ -19,9 +22,16 @@
               v-on="on"
             ></v-text-field>
           </template>
-          <v-date-picker v-model="date" @input="menu = false" :max="date"></v-date-picker>
+          <v-date-picker
+            v-model="date"
+            @input="menu = false"
+            :max="new Date().toISOString().substr(0, 10)"
+          ></v-date-picker>
         </v-menu>
-      </v-flex>
+        <v-btn icon v-on:click="incrementDate" :disabled="dateIsToday()">
+          <v-icon>mdi-chevron-right</v-icon>
+        </v-btn>
+      </v-row>
       <v-row v-if="loading" justify="center">
         <v-progress-circular size="32" width="4" :indeterminate="true" color="light-blue"></v-progress-circular>
       </v-row>
@@ -83,6 +93,20 @@ export default {
           this.loading = false
           this.error = true
         })
+    },
+    incrementDate() {
+      const curDate = new Date(this.date)
+      curDate.setDate(curDate.getDate() + 1)
+      this.date = curDate.toISOString().substr(0, 10)
+    },
+    decrementDate() {
+      const curDate = new Date(this.date)
+      curDate.setDate(curDate.getDate() - 1)
+      this.date = curDate.toISOString().substr(0, 10)
+    },
+    dateIsToday() {
+      const curDate = new Date(this.date)
+      return curDate >= new Date()
     },
   },
   watch: {
