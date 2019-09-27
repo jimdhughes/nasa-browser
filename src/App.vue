@@ -18,6 +18,14 @@
             <v-list-item-title>NEO Search</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item to="/weather">
+          <v-list-item-action>
+            <v-icon>mdi-weather-sunny</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Mars Weather</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
