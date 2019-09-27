@@ -22,11 +22,7 @@
               v-on="on"
             ></v-text-field>
           </template>
-          <v-date-picker
-            v-model="date"
-            @input="menu = false"
-            :max="new Date().toISOString().substr(0, 10)"
-          ></v-date-picker>
+          <v-date-picker v-model="date" @input="menu = false" :max="today"></v-date-picker>
         </v-menu>
         <v-btn icon v-on:click="incrementDate" :disabled="dateIsToday()">
           <v-icon>mdi-chevron-right</v-icon>
@@ -37,7 +33,7 @@
       </v-row>
       <v-row v-if="error" justify="center">Error Getting APOD</v-row>
       <v-col cols="12" justify="center" v-if="apod">
-        <v-row v-if="apod.media_type=='image'" align="center" justify="center">
+        <v-row v-if="apod.media_type == 'image'" align="center" justify="center">
           <v-img
             v-bind:src="apod.url"
             v-bind:lazy-src="apod.url"
@@ -48,13 +44,13 @@
           ></v-img>
         </v-row>
         <v-row align="center" justify="center">
-          <p>{{apod.title}}</p>
+          <p>{{ apod.title }}</p>
         </v-row>
-        <v-row align="center" justify="center" v-if="apod.copyright">&copy; {{apod.copyright}}</v-row>
+        <v-row align="center" justify="center" v-if="apod.copyright">&copy; {{ apod.copyright }}</v-row>
         <v-row v-if="apod" align="center" justify="center">
           <a v-bind:href="apod.url" target="_blank">
-            <span v-if="apod.media_type=='image'">SD</span>
-            <span v-if="apod.media_type=='video'">Watch Here</span>
+            <span v-if="apod.media_type == 'image'">SD</span>
+            <span v-if="apod.media_type == 'video'">Watch Here</span>
           </a>
           <span v-if="apod.hdurl">
             &nbsp;|
@@ -72,6 +68,7 @@ export default {
   data: () => ({
     menu: false,
     date: new Date().toISOString().substr(0, 10),
+    today: new Date().toISOString().substr(0, 10),
     apod: null,
     loading: false,
     error: false,
@@ -106,7 +103,7 @@ export default {
     },
     dateIsToday() {
       const curDate = new Date(this.date)
-      return curDate >= new Date()
+      return curDate >= new Date(this.today)
     },
   },
   watch: {

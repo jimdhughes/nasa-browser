@@ -8,7 +8,12 @@ function getApod(date) {
   return axios.get(`http://localhost:8000/api/v1/apod/${date}`).then(res => res)
 }
 
+function getWeather() {
+  return axios.get(`http://localhost:8000/api/v1/marsweather`).then(res => res)
+}
+
 module.exports = {
   getNeos,
   getApod,
+  getWeather,
 }

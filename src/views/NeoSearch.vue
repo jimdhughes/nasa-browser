@@ -47,6 +47,17 @@ export default {
       this.neos = res.data
     })
   },
+  methods: {
+    onDateSelect() {},
+    loadNeos(date) {
+      getNeos(date).then(res => {
+        this.neos = res.data
+        this.neos = this.neos.sort((a, b) => {
+          a.is_potentially_hazardous_asteroid ? 1 : -1
+        })
+      })
+    },
+  },
   watch: {
     date: {
       handler(date) {
