@@ -11,7 +11,7 @@
       <h4>{{ weather.sol_keys.length }} Sols Reporting</h4>
     </v-flex>
     <v-flex xs12cols="12" wrap v-if="weather">
-      <v-card v-for="s in weather.sol_keys" v-bind:key="s">
+      <v-card v-for="s in weather.sol_keys" v-bind:key="s" class="solCard">
         <v-card-title>Sol {{ s }}</v-card-title>
         <v-card-text>
           <p>Min: {{ weather.sol_weather[s].AT.mn }} &deg; F</p>
@@ -50,3 +50,8 @@ export default {
   },
 }
 </script>
+<style scoped>
+.solCard {
+  margin: 6px;
+}
+</style>

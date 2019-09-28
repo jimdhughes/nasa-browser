@@ -1,41 +1,23 @@
 <template>
   <v-container>
     <v-layout column>
-      <v-flex xs12 mb-5>
-        <v-menu
-          v-model="menu"
-          :close-on-content-click="false"
-          :nudge-right="40"
-          transition="scale-transition"
-          offset-y
-          min-width="290px"
-        >
-          <template v-slot:activator="{ on }">
-            <v-text-field
-              v-model="date"
-              label="Pick a date"
-              prepend-icon="mdi-calendar"
-              readonly
-              v-on="on"
-            ></v-text-field>
-          </template>
-          <v-date-picker v-model="date" @input="menu = false"></v-date-picker>
-        </v-menu>
-      </v-flex>
-      <v-flex v-if="neos && neos.length > 0">
+      <DateSelector :date="date" :onChange="onDateSelect" />
+      <v-col v-if="neos && neos.length > 0">
         <NeoList :neos="neos" :date="date" />
-      </v-flex>
+      </v-col>
     </v-layout>
   </v-container>
 </template>
 
 <script>
 import { getNeos } from '../api/NasaApi'
+import DateSelector from '../components/DatePicker.vue'
 import NeoList from '../components/NeoList.vue'
 
 export default {
   components: {
     NeoList,
+    DateSelector,
   },
   data: () => ({
     menu: false,
@@ -48,7 +30,9 @@ export default {
     })
   },
   methods: {
-    onDateSelect() {},
+    onDateSelect(d) {
+      this.date = d
+    },
     loadNeos(date) {
       getNeos(date).then(res => {
         this.neos = res.data
