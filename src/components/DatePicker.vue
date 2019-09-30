@@ -13,14 +13,14 @@
     >
       <template v-slot:activator="{ on }">
         <v-text-field
-          v-model="date"
+          v-model="newDate"
           label="Pick a date"
           prepend-icon="mdi-calendar"
           readonly
           v-on="on"
         ></v-text-field>
       </template>
-      <v-date-picker v-model="date" @input="menu = false" :max="maxDate"></v-date-picker>
+      <v-date-picker v-model="newDate" @input="menu = false" :max="maxDate"></v-date-picker>
     </v-menu>
     <v-btn icon v-on:click="incrementDate" :disabled="isMaxDate()">
       <v-icon>mdi-chevron-right</v-icon>
@@ -45,21 +45,34 @@ export default {
   },
   data: () => ({
     menu: false,
+    newDate: null,
   }),
+  mounted() {
+    this.newDate = new Date(this.date).toISOString().substr(0, 10)
+  },
   methods: {
     incrementDate() {
-      const curDate = new Date(this.date)
-      curDate.setDate(curDate.getDate() + 1)
-      this.onChange(curDate.toISOString().substr(0, 10))
+      this.newDate = new Date(this.date)
+      this.newDate.setDate(this.newDate.getDate() + 1)
+      this.newDate = this.newDate.toISOString().substr(0, 10)
+      this.onChange(this.newDate)
     },
     decrementDate() {
-      const curDate = new Date(this.date)
-      curDate.setDate(curDate.getDate() - 1)
-      this.onChange(curDate.toISOString().substr(0, 10))
+      this.newDate = new Date(this.date)
+      this.newDate.setDate(this.newDate.getDate() - 1)
+      this.newDate = this.newDate.toISOString().substr(0, 10)
+      this.onChange(this.newDate)
     },
     isMaxDate() {
       const curDate = new Date(this.date)
       return curDate >= new Date(this.maxDate)
+    },
+  },
+  watch: {
+    newDate: {
+      handler(newDate) {
+        this.onChange(newDate)
+      },
     },
   },
 }
